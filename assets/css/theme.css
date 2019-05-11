@@ -1,7 +1,7 @@
 /* Theme */
 
 main {
-	background: #FAFAFA;
+	background: transparent url(../logo-min.png) space 0 0;
 	color: #000000;
 }
 
