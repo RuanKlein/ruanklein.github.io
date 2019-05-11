@@ -14,12 +14,51 @@
 	<link rel="stylesheet" href="assets/css/reset.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 	<link rel="stylesheet" href="assets/css/theme.css">
+	<link rel="stylesheet" href="assets/css/termynal.min.css">
+
+	<style>
+		.termynal {
+			text-align: left;
+			background-color: black;
+			margin: auto;
+		}
+	</style>
 </head>
 <body>
 	<main>
         <!-- <div class="intro">Hello, I'm Ruan!</div> -->
         <img src="assets/logo.png" class="img-logo" />
-		<div class="tagline">&lt; React | Electron | Node | Laravel &gt;</div>
+		<!-- <div class="tagline">&lt; React | Electron | Node | Laravel &gt;</div> -->
+		<div class="termynal" id="termynal" data-termynal data-ty-typeDelay="60" data-ty-lineDelay="950">
+			<span data-ty="input">cat info.json</span>
+			<span data-ty>
+				{
+					"name": "Ruan Klein",
+					"description": "Desenvolvedor Full-stack",
+					"course": {
+					   "graduation": "Análise e Desenvolvimento de Sistemas",
+					   "postgraduate": "Ethical Hacking e CyberSecurity"
+					},
+					"skill": {
+					   "languages": [
+							  "php",
+							  "java",
+							  "javascript",
+							  "shellscript"
+					   ],
+					   "frameworks": [
+							  "Electron",
+							  "React",
+							  "Laravel"
+					   ],
+					   "devops": [
+							  "Docker",
+							  "Linux"
+					   ]
+					}
+				   }
+			</span>
+		</div>
 		<!-- Find your icons from here - https://fontawesome.com/icons?d=gallery&s=brands -->
 		<div class="icons-social">
             <a target="_blank" href="https://www.facebook.com/RuanKlein88"><i class="fab fa-facebook"></i></a>
@@ -28,4 +67,5 @@
         </div>
 	</main>
 </body>
+<script src="assets/js/termynal.min.js" data-termynal-container="#termynal"></script>
 </html>
