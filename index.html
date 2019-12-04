@@ -40,48 +40,17 @@
 				Ruan Klein
 			</div> -->
 			<div class="menu">
-				<a href="/projects" class="link">
-					<div class="title">Projects</div>
+				<a href="#" class="link" onclick="jq('home.json')">
+					<div class="title">Home</div>
 					<div class="bar"></div>
 				</a>
-				<a href="/blog" class="link">
-					<div class="title">Blog</div>
+				<a href="#" class="link" onclick="jq('projects.json')">
+					<div class="title">Projects</div>
 					<div class="bar"></div>
 				</a>
 			</div>
 		</div>
-		<div class="termynal" id="termynal" data-termynal data-ty-typeDelay="60" data-ty-lineDelay="950">
-			<span data-ty="input">cat info.json</span>
-			<span data-ty>
-				{
-					"name": "Ruan Klein",
-					"description": "Full-stack Developer",
-					"course": {
-					   "undergraduate": "Technology in Systems Analysis and Development",
-					   "graduate": "Ethical Hacking and CyberSecurity"
-					},
-					"skill": {
-					   "languages": [
-							  "php",
-							  "java",
-							  "javascript",
-							  "shellscript"
-					   ],
-					   "frameworks": [
-							  "electron",
-							  "react",
-							  "reactnative",
-							  "laravel"
-					   ],
-					   "devops": [
-							  "docker",
-							  "linux"
-					   ]
-					}
-				   }
-			</span>
-		</div>
-		<!-- Find your icons from here - https://fontawesome.com/icons?d=gallery&s=brands -->
+		<div class="termynal" id="termynal"></div>
 		<div class="icons-social">
             <a target="_blank" href="https://www.facebook.com/RuanKlein88"><i class="fab fa-facebook"></i></a>
             <a target="_blank" href="https://github.com/ruanklein"><i class="fab fa-github"></i></a>
@@ -89,5 +58,89 @@
         </div>
 	</main>
 </body>
+<!-- Load data -->
 <script src="assets/js/termynal.min.js" data-termynal-container="#termynal"></script>
+<script>	
+var noExec = false;
+(function() { 
+	jq('home.json');
+})();
+
+function jq(jsonFile) {
+	if(noExec)
+		return;
+
+	var value = '';
+	noExec = true;
+	
+	// Clear terminal
+	document.getElementById('termynal').innerHTML = '';
+
+    if(jsonFile == 'home.json')
+    {
+		value = JSON.stringify({
+			"name": "Ruan Klein",
+			"description": "Full-stack Developer",
+			"course": {
+				"undergraduate": "Technology in Systems Analysis and Development",
+				"graduate": "Ethical Hacking and CyberSecurity"
+			},
+			"skill": {
+				"languages": [
+						"php",
+						"java",
+						"javascript",
+						"shellscript"
+				],
+				"frameworks": [
+						"electron",
+						"react",
+						"reactnative",
+						"laravel"
+				],
+				"devops": [
+						"docker",
+						"linux"
+				]
+			}
+		}, null, 1);
+    }
+    else if (jsonFile == 'projects.json')
+    {
+        value = JSON.stringify([
+			{
+				'name': 'Bin2Box',
+				'desc': 'SBaGen Binaural converter to Monaural and Harmonic Box',
+				'uri': 'https://github.com/RuanKlein/bin2box'
+			},
+			{
+				'name': 'YTDownloader',
+				'desc': 'YouTube Downloader to Mp4/Mp3',
+				'uri': 'https://github.com/RuanKlein/YTDownloader'
+			},
+			{
+				'name': 'Watermark CSV/PDF',
+				'desc': 'Apply Watermark from CSV to PDF files',
+				'uri': 'https://github.com/RuanKlein/watermark-csv-pdf'
+			},
+			{
+				'name': 'WSL1 Script',
+				'desc': 'A script to manage docker via WSL with VirtualBox ',
+				'uri': 'https://github.com/RuanKlein/wsl1-docker-virtualbox'
+			}
+		], null, 1);
+    }
+
+    var termynal = new Termynal('#termynal', { 
+		lineData: [
+			{ type: 'input', typeDelay: 60, lineDelay: 900, value: 'cat ' + jsonFile },
+			{ value }
+		]
+	});
+
+	setTimeout(function() {
+		noExec = false;
+	}, 3000);
+}
+</script>
 </html>
