@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import Terminal from '../Components/Terminal';
 
@@ -6,8 +6,11 @@ import { Command } from '../Components/Terminal/types';
 
 import { calcAge } from '../Helpers';
 
+import { iData } from './types';
+
 const App = () => {
     const [darkTheme, setDarkTheme] = useState(false);
+    const [data, setData] = useState<iData>({});
 
     const onChangeThemeCommand = () => {
         const message = `Tema alterado para ${darkTheme ? '\'claro\'' : '\'escuro\''}`;
@@ -16,13 +19,15 @@ const App = () => {
         return message;
     };
 
-    const getInfo = async (info : string, replace = {}) => {
-        const data = await fetch('/info.json').then(res => res.json());
-
+    const getInfo = (info : string, replace = {}) : string => {
         let content = data[info];
-        
+
+        if(!content) {
+            return '';
+        }
+
         if(replace) {
-            Object.entries(replace).map(value => {
+            Object.entries(replace).map((value : Array<any>) => {
                 content = content.replace(`{${value[0]}}`, value[1]);
             });
         }
@@ -30,12 +35,21 @@ const App = () => {
         return content;
     };
 
+    useEffect(() => {
+        const getData = async () => {
+            const jsonData = await fetch('/info.json').then(res => res.json());
+            setData(jsonData);
+        };
+
+        getData();
+    }, []);
+
     let commandList : Command = {
-        'quem-sou-eu':  async () => await getInfo('quem-sou-eu', { age: calcAge(1991, 12, 21)}),
-        'experiencia':  async () => await getInfo('experiencia', { years: (new Date).getFullYear() - 2015 }),
-        'skills':       async () => await getInfo('skills'),
-        'linkedin':     async () => await getInfo('linkedin'),
-        'github':       async () => await getInfo('github'),
+        'quem-sou-eu':  getInfo('quem-sou-eu', { age: calcAge(1991, 12, 21)}),
+        'experiencia':  getInfo('experiencia', { years: (new Date).getFullYear() - 2015 }),
+        'skills':       getInfo('skills'),
+        'linkedin':     getInfo('linkedin'),
+        'github':       getInfo('github'),
         'alterar-tema': onChangeThemeCommand,
     };
 

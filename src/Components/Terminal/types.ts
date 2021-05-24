@@ -1,4 +1,4 @@
-export type TerminalFunction = (arg ?: any) => string | Promise<string>;
+export type TerminalFunction = (arg ?: any) => string;
 
 export type Command = { 
     [key: string]: string | TerminalFunction
