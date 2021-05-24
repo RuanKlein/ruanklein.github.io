@@ -2,6 +2,7 @@
   "name": "ruanklein.github.io",
   "version": "1.0.0",
   "repository": "https://github.com/RuanKlein/ruanklein.github.io.git",
+  "homepage": "https://ruanklein.github.io/",
   "author": "Ruan Klein <ruan.klein@gmail.com>",
   "license": "MIT",
   "scripts": {
