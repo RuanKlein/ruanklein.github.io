@@ -15,9 +15,7 @@ const App = () => {
             const browser = getBrowser();
             const os = getOperatingSystem();
 
-            const dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-            setWelcomeMessage(`[${dateNow}] IP ${ip}, ${browser} from ${os} `);
+            setWelcomeMessage(`[${new Date().toLocaleString()}] IP ${ip}, ${browser} from ${os} `);
         };
         fetchData();
     }, []);
