@@ -1,13 +1,12 @@
-export type TerminalFunction = (arg ?: any) => string;
-
-export type Command = { 
-    [key: string]: string | TerminalFunction
+export type CommandType = { 
+    [key: string]: string | ((arg ?: string) => string)
 };
 
 export interface iTerminal {
-    dark: boolean;
-    commandList: Command;
-    welcome: string;
-    commandNotFound: string;
+    dark?: boolean;
+    commandList: CommandType;
+    welcome?: string;
+    commandNotFound?: string;
     prompt?: string;
+    showControlButton?: boolean;
 }

@@ -1,61 +1,49 @@
 import { useState, useEffect } from 'react';
 import { createGlobalStyle } from 'styled-components';
+
 import Terminal from '../Components/Terminal';
-
-import { Command } from '../Components/Terminal/types';
-
-import { calcAge } from '../Helpers';
-
-import { iData } from './types';
+import { CommandType } from '../Components/Terminal/types';
+import { getBrowser, getOperatingSystem, getPublicIp } from '../Helpers/Device';
 
 const App = () => {
     const [darkTheme, setDarkTheme] = useState(false);
-    const [data, setData] = useState<iData>({});
-
-    const onChangeThemeCommand = () => {
-        const message = `Tema alterado para ${darkTheme ? '\'claro\'' : '\'escuro\''}`;
-        setDarkTheme(!darkTheme);
-
-        return message;
-    };
-
-    const getInfo = (info : string, replace = {}) : string => {
-        let content = data[info];
-
-        if(!content) {
-            return '';
-        }
-
-        if(replace) {
-            Object.entries(replace).map((value : Array<any>) => {
-                content = content.replace(`{${value[0]}}`, value[1]);
-            });
-        }
-
-        return content;
-    };
+    const [welcomeMessage, setWelcomeMessage] = useState('');
 
     useEffect(() => {
-        const getData = async () => {
-            const jsonData = await fetch('/info.json').then(res => res.json());
-            setData(jsonData);
-        };
+        const fetchData = async () => {
+            const ip = await getPublicIp();
+            const browser = getBrowser();
+            const os = getOperatingSystem();
 
-        getData();
+            const dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            setWelcomeMessage(`[${dateNow}] IP ${ip}, ${browser} from ${os} `);
+        };
+        fetchData();
     }, []);
 
-    let commandList : Command = {
-        'quem-sou-eu':  getInfo('quem-sou-eu', { age: calcAge(1991, 12, 21)}),
-        'experiencia':  getInfo('experiencia', { years: (new Date).getFullYear() - 2015 }),
-        'skills':       getInfo('skills'),
-        'linkedin':     getInfo('linkedin'),
-        'github':       getInfo('github'),
-        'alterar-tema': onChangeThemeCommand,
+    const onChangeThemeCommand = () => {
+        setDarkTheme(prev => !prev);
+        return `theme changed to '${darkTheme ? 'light' : 'dark'}'`;
     };
 
-    commandList = {
-        ...commandList,
-        ajuda: `Comandos: ${Object.entries(commandList).map((command, key) => key === Object.keys(commandList).length ? `${command[0]}, ` : ` ${command[0]}`)}`
+    const onAboutMe = () => {
+        return JSON.stringify({
+            name: 'Ruan',
+            state: 'Paraná',
+            city: 'Curitiba',
+            skills: ['JavaScript', 'TypeScript', 'Node.js', 'React.js', 'PHP', 'Shell Script'],
+            social: {
+                linkedin: 'https://www.linkedin.com/in/ruanklein/',
+                github: 'https://github.com/RuanKlein'
+            }
+        });
+    };
+
+    const commandList : CommandType = {
+        'about-me': onAboutMe,
+        'change-theme': onChangeThemeCommand,
+        help: 'Commands: about-me, change-theme, clear'
     };
 
     return <>
@@ -63,9 +51,8 @@ const App = () => {
         <Terminal
             dark={darkTheme}
             commandList={commandList}
-            welcome="Bem vindo! Para começar, digite: 'ajuda' "
-            commandNotFound="Comando não encontrado. Tente 'ajuda'"
-            prompt="ruan@site:~$ "
+            commandNotFound="Command not found. Type 'help' to print available commands."
+            welcome={welcomeMessage}
         />
     </>;
 };
