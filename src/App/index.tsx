@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { createGlobalStyle } from 'styled-components';
 
 import Terminal from '../Components/Terminal';
 import { CommandType } from '../Components/Terminal/types';
@@ -19,6 +18,10 @@ const App = () => {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        document.body.style.background = darkTheme ? '#333' : '#eee';
+    }, [darkTheme]);
 
     const onChangeThemeCommand = () => {
         setDarkTheme(prev => !prev);
@@ -44,21 +47,12 @@ const App = () => {
         help: 'Commands: about-me, change-theme, clear'
     };
 
-    return <>
-        <GlobalStyle darkTheme={darkTheme} />
-        <Terminal
+    return <Terminal
             dark={darkTheme}
             commandList={commandList}
             commandNotFound="Command not found. Type 'help' to print available commands."
             welcome={welcomeMessage}
-        />
-    </>;
+    />;
 };
-
-const GlobalStyle = createGlobalStyle<{ darkTheme: boolean }>`
-    body {
-        background: ${props => (props.darkTheme ? '#333' : '#eee')};
-    }
-`;
 
 export default App;
